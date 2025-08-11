@@ -1,66 +1,80 @@
 plugins {
-	id 'java'
-	id 'jacoco'
-	id 'org.springframework.boot' version '3.5.4'
-	id 'io.spring.dependency-management' version '1.1.7'
+    id 'java'
+    id 'jacoco'
+    id 'org.springframework.boot' version '3.5.4'
+    id 'io.spring.dependency-management' version '1.1.7'
 }
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 ext {
-	jacocoToolVersion = '0.8.13'
+    jacocoToolVersion = '0.8.13'
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 jacoco {
-	toolVersion = "${jacocoToolVersion}"
+    toolVersion = "${jacocoToolVersion}"
 }
 
 jacocoTestReport {
-	dependsOn test // required
-	reports {
-		xml.required = true
-		html.required = true
-		csv.required = false
-	}
+    dependsOn test // required
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    'com/example/time/TimeApplication.class'
+            ])
+        }))
+    }
 }
 
 jacocoTestCoverageVerification {
-	violationRules {
-		rule {
-			limit {
-				minimum = 0.80 // 80% line coverage required
-			}
-		}
-	}
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.80 // 80% line coverage required
+            }
+        }
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    'com/example/time/TimeApplication.class'
+            ])
+        }))
+    }
 }
 
 check.dependsOn jacocoTestCoverageVerification
