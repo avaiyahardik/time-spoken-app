@@ -2,6 +2,10 @@ package com.example.time.util;
 
 public class NumberToWordsUtil {
 
+    private static final int MAX_HOURS = 12;
+    private static final int QUARTER_MINUTES = 15;
+    private static final int HALF_HOUR_MINUTES = 30;
+
     private static final String[] NUMBERS = {
             "", "one", "two", "three", "four", "five", "six", "seven",
             "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen",
@@ -16,7 +20,7 @@ public class NumberToWordsUtil {
     }
 
     public static String hourToWord(int hour) {
-        if (hour < 0 || hour > 12) {
+        if (hour < 0 || hour > MAX_HOURS) {
             throw new IllegalArgumentException("Invalid number for hour: " + hour);
         }
         return NUMBERS[hour];
@@ -38,8 +42,8 @@ public class NumberToWordsUtil {
         if (minute < 0 || minute > 59) {
             throw new IllegalArgumentException("Invalid number for minute: " + minute);
         }
-        if (minute == 15) return "quarter";
-        if (minute == 30) return "half";
+        if (minute == QUARTER_MINUTES) return "quarter";
+        if (minute == HALF_HOUR_MINUTES) return "half";
         return numberToWords(minute);
     }
 }

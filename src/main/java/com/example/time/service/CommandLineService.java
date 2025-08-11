@@ -21,9 +21,9 @@ public class CommandLineService {
 
     public void start(InputStream in, PrintStream out) {
         final Scanner scanner = new Scanner(in);
-        out.println("Enter time in 24-hour format (HH:mm), or type 'exit' to quit:");
+        out.println("\nEnter time in 24-hour format (HH:mm), or type 'exit' to quit:");
         while (true) {
-            out.print("Input time: ");
+            out.print("\nInput time: ");
             final String input = scanner.nextLine().trim();
 
             if (input.equalsIgnoreCase("exit")) {
