@@ -5,6 +5,14 @@ import com.example.time.util.NumberToWordsUtil;
 
 public class OnTheHourStrategy implements TimeToWordsStrategy {
 
+    /**
+     * Converts the given hour and minute (assumed to be zero) into
+     * a spoken British time string.
+     *
+     * @param hour   the hour component (0–23)
+     * @param minute the minute component (must be 0)
+     * @return a human-readable spoken time string (e.g., "two o'clock", "midnight")
+     */
     @Override
     public String convert(int hour, int minute) {
         return switch (hour) {
