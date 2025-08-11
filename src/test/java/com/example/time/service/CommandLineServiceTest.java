@@ -1,7 +1,12 @@
 package com.example.time.service;
 
+import com.example.time.service.timespoken.TimeSpokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -9,15 +14,21 @@ import java.io.PrintStream;
 import java.time.LocalTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 
+@ExtendWith(MockitoExtension.class)
 class CommandLineServiceTest {
 
+    @Mock
+    private TimeSpokenService timeSpokenService;
+
+    @InjectMocks
     private CommandLineService cli;
+
     private ByteArrayOutputStream outContent;
 
     @BeforeEach
     void setUp() {
-        cli = new CommandLineService();
         outContent = new ByteArrayOutputStream();
     }
 
@@ -42,7 +53,7 @@ class CommandLineServiceTest {
         cli.start(in, new PrintStream(outContent));
 
         String output = outContent.toString();
-        assertThat(output).contains("✅ Valid 24-hour time: 14:15");
+        verify(timeSpokenService).toSpokenTime(LocalTime.of(14, 15));
         assertThat(output).contains("Exiting program. Goodbye!");
     }
 

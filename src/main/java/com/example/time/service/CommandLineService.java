@@ -1,5 +1,7 @@
 package com.example.time.service;
 
+import com.example.time.service.timespoken.TimeSpokenService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -10,9 +12,12 @@ import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 @Service
+@RequiredArgsConstructor
 public class CommandLineService {
 
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("H:mm");
+
+    private final TimeSpokenService timeSpokenService;
 
     public void start(InputStream in, PrintStream out) {
         final Scanner scanner = new Scanner(in);
@@ -28,8 +33,7 @@ public class CommandLineService {
 
             LocalTime localTime = parse24HourTime(input, out);
             if (localTime != null) {
-                out.println("✅ Valid 24-hour time: " + input);
-                // TODO Convert time to words here
+                out.println(timeSpokenService.toSpokenTime(localTime));
             }
         }
     }
