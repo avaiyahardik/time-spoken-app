@@ -33,7 +33,7 @@ public class CommandLineService {
 
             LocalTime localTime = parse24HourTime(input, out);
             if (localTime != null) {
-                out.println(timeSpokenService.toSpokenTime(localTime));
+                out.printf(" → %s%n", timeSpokenService.toSpokenTime(localTime));
             }
         }
     }
